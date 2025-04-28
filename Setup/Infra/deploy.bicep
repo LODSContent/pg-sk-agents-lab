@@ -20,6 +20,10 @@ param adminLoginPassword string
 @minLength(1)
 param adminEntraIDLoginUsername string
 
+@description('Entra ID Admin ObjectID for the database.')
+@minLength(1)
+param adminEntraIDLoginObjectID string
+
 @description('Unique name for the Azure OpenAI service.')
 param azureOpenAIServiceName string = 'oai-learn-${resourceGroup().location}-${uniqueString(resourceGroup().id)}'
 
@@ -61,7 +65,7 @@ resource postgreSQLFlexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@202
 
 resource addPostgresEntraIDAdminUsername 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2024-11-01-preview' = {
   parent: postgreSQLFlexibleServer
-  name: 'activeDirectory'
+  name: adminEntraIDLoginObjectID
   properties: {
     principalType: 'User'
     principalName: adminEntraIDLoginUsername    
