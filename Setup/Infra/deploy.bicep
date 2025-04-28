@@ -9,12 +9,17 @@ param postgresVersion string = '16'
 
 @description('Login name of the database administrator.')
 @minLength(1)
-param adminLogin string = 'pgAdmin'
+param adminLogin string
 
 @description('Password for the database administrator.')
 @minLength(8)
 @secure()
 param adminLoginPassword string
+
+@description('Entra ID Admin Username for the database.')
+@minLength(8)
+@secure()
+param adminEntraIDLoginUsername string
 
 @description('Unique name for the Azure OpenAI service.')
 param azureOpenAIServiceName string = 'oai-learn-${resourceGroup().location}-${uniqueString(resourceGroup().id)}'
@@ -34,7 +39,7 @@ resource postgreSQLFlexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@202
     administratorLogin: adminLogin
     administratorLoginPassword: adminLoginPassword
     authConfig: {
-      activeDirectoryAuth: 'Disabled'
+      activeDirectoryAuth: 'Enabled'
       passwordAuth: 'Enabled'
       tenantId: subscription().tenantId
     }
@@ -52,6 +57,16 @@ resource postgreSQLFlexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@202
       tier: 'P10'
     }
     version: postgresVersion
+  }
+}
+
+resource addPostgresEntraIDAdminUsername 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2024-11-01-preview' = {
+  parent: postgreSQLFlexibleServer
+  name: 'addPostgresEntraIDAdminUsername'
+  properties: {
+    principalType: 'User'
+    principalName: adminEntraIDLoginUsername
+    tenantId: subscription().tenantId
   }
 }
 
