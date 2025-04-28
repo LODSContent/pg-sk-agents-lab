@@ -20,6 +20,10 @@ param adminLoginPassword string
 @minLength(1)
 param adminEntraIDLoginUsername string
 
+@description('Entra ID Admin ObjectID for the database.')
+@minLength(1)
+param adminEntraIDLoginObjectID string
+
 @description('Unique name for the Azure OpenAI service.')
 param azureOpenAIServiceName string = 'oai-learn-${resourceGroup().location}-${uniqueString(resourceGroup().id)}'
 
@@ -64,7 +68,7 @@ resource addPostgresEntraIDAdminUsername 'Microsoft.DBforPostgreSQL/flexibleServ
   name: 'addPostgresEntraIDAdminUsername'
   properties: {
     principalType: 'User'
-    principalName: adminEntraIDLoginUsername
+    principalName: adminEntraIDLoginObjectID    
     tenantId: subscription().tenantId
   }
 }
@@ -131,6 +135,9 @@ resource azureOpenAIService 'Microsoft.CognitiveServices/accounts@2023-05-01' = 
 resource azureOpenAIEmbeddingDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = {
   name: 'text-embedding-3-small'
   parent: azureOpenAIService
+  dependsOn: [
+    azureOpenAIService    
+  ]
   sku: {
     name: 'Standard'
     capacity: 350
@@ -149,6 +156,10 @@ resource azureOpenAIEmbeddingDeployment 'Microsoft.CognitiveServices/accounts/de
 resource azureOpenAIChatDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = {
   name: 'gpt-4o'
   parent: azureOpenAIService
+  dependsOn: [
+    azureOpenAIService
+    azureOpenAIEmbeddingDeployment
+  ]
   sku: {
     name: 'Standard'
     capacity: 200
