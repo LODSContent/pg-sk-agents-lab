@@ -17,8 +17,7 @@ param adminLogin string
 param adminLoginPassword string
 
 @description('Entra ID Admin Username for the database.')
-@minLength(8)
-@secure()
+@minLength(1)
 param adminEntraIDLoginUsername string
 
 @description('Unique name for the Azure OpenAI service.')
