@@ -16,17 +16,6 @@ param adminLogin string
 @secure()
 param adminLoginPassword string
 
-/*
-@description('Entra ID Admin Username for the database.')
-@minLength(1)
-param adminEntraIDLoginUsername string
-
-@description('Entra ID Admin ObjectID for the database.')
-@minLength(1)
-param adminEntraIDLoginObjectID string
-*/
-
-
 @description('Unique name for the Azure OpenAI service.')
 param azureOpenAIServiceName string = 'oai-learn-${resourceGroup().location}-${uniqueString(resourceGroup().id)}'
 
@@ -66,17 +55,6 @@ resource postgreSQLFlexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@202
   }
 }
 
-/*
-resource addPostgresEntraIDAdminUsername 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2024-11-01-preview' = {
-  parent: postgreSQLFlexibleServer
-  name: adminEntraIDLoginObjectID
-  properties: {
-    principalType: 'User'
-    principalName: adminEntraIDLoginUsername    
-    tenantId: subscription().tenantId
-  }
-}
-*/
 
 @description('Firewall rule that checks the "Allow public access from any Azure service within Azure to this server" box.')
 resource allowAllAzureServicesAndResourcesWithinAzureIps 'Microsoft.DBforPostgreSQL/flexibleServers/firewallRules@2023-03-01-preview' = {
