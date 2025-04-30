@@ -1,6 +1,11 @@
-select azure_ai.set_setting('azure_ml.scoring_endpoint','');
-select azure_ai.set_setting('azure_ml.endpoint_key', '');
+-- These SQL commands are used to set up the Azure AI integration for semantic relevance scoring in a PostgreSQL database.
+-- The first command sets the Azure OpenAI API key, which is required for authentication with the Azure OpenAI service.
+-- The second command sets the Azure ML scoring endpoint, which is the URL of the Azure Machine Learning service that will be used for scoring.
+select azure_ai.set_setting('azure_ml.scoring_endpoint','{ENDPOINT}');
+select azure_ai.set_setting('azure_ml.endpoint_key', '{KEY}');
 
+-- This function is used to call the Azure ML service for semantic relevance scoring.
+-- It takes a query and an integer n as input, generates a JSON object with pairs of query and opinion text,
 CREATE OR REPLACE FUNCTION semantic_relevance(query TEXT, n INT)
 RETURNS jsonb AS $$
 DECLARE
@@ -17,6 +22,8 @@ BEGIN
 	);
 END $$ LANGUAGE plpgsql;
 
+-- This function generates a JSON object with pairs of query and opinion text.
+-- It uses the `cases` table to retrieve the opinions and their IDs, ordered by their similarity to the query.
 CREATE OR REPLACE FUNCTION generate_json_pairs(query TEXT, n INT)
 RETURNS jsonb AS $$
 BEGIN
