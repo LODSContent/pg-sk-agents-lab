@@ -3,10 +3,7 @@ wait-job -name azLogin | Out-Null
 
 az account set -s "@lab.CloudSubscription.Id" --only-show-errors
 
-$pguser = ""
-$pgpassword = ""
-
-az deployment group create --resource-group "@lab.CloudResourceGroup(ResourceGroup1).Name" --template-file "C:\Users\LabUser\Downloads\pg-sk-agents-lab\Setup\Infra\deploy.bicep" --parameters restore=false adminLogin="$pguser" adminLoginPassword="$pgpassword" --only-show-errors
+az deployment group create --resource-group "@lab.CloudResourceGroup(ResourceGroup1).Name" --template-file "C:\Users\LabUser\Downloads\pg-sk-agents-lab\Setup\Infra\deploy.bicep" --parameters restore=false --only-show-errors
 
 $aadUserPrincipalName = "@lab.CloudPortalCredential(User1).Username"
 $objectId = az ad user show --id $aadUserPrincipalName --query id --output tsv

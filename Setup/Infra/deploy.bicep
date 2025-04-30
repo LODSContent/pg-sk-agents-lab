@@ -7,17 +7,6 @@ param serverName string = 'psql-learn-${resourceGroup().location}-${uniqueString
 @description('The version of PostgreSQL to use.')
 param postgresVersion string = '16'
 
-/*
-@description('Login name of the database administrator.')
-@minLength(1)
-param adminLogin string
-
-@description('Password for the database administrator.')
-@minLength(8)
-@secure()
-param adminLoginPassword string
-*/
-
 @description('Unique name for the Azure OpenAI service.')
 param azureOpenAIServiceName string = 'oai-learn-${resourceGroup().location}-${uniqueString(resourceGroup().id)}'
 

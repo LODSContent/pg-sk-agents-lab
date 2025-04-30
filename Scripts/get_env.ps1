@@ -16,7 +16,22 @@ $postgresServerName = az postgres flexible-server list --resource-group $resourc
 # Fetch PostgreSQL server fully qualified domain name
 $postgresHost = az postgres flexible-server show --name $postgresServerName --resource-group $resourceGroupName --query "fullyQualifiedDomainName" --output tsv
 
+# Fetch Entra ID access token
+$token = az account get-access-token --resource-type oss-rdbms --output json | ConvertFrom-Json
+$accessToken = $token.accessToken
+
 # Print the configuration
+Write-Output ""
+Write-Output ""
 Write-Output "AZURE_OPENAI_ENDPOINT: $openaiEndpoint"
+Write-Output ""
+Write-Output ""
 Write-Output "AZURE_OPENAI_KEY: $openaiKey"
-Write-Output "DB_CONFIG - host: $postgresHost"
+Write-Output ""
+Write-Output ""
+Write-Output "DB_CONFIG - HOST: $postgresHost"
+Write-Output ""
+Write-Output ""
+Write-Output "DB_CONFIG - PASSWORD: $accessToken"
+Write-Output ""
+Write-Output ""
