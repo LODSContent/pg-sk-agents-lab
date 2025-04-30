@@ -30,12 +30,10 @@ resource postgreSQLFlexibleServer 'Microsoft.DBforPostgreSQL/flexibleServers@202
     name: 'Standard_D2ds_v4'
     tier: 'GeneralPurpose'
   }
-  properties: {
-    administratorLogin: adminLogin
-    administratorLoginPassword: adminLoginPassword
+  properties: {    
     authConfig: {
       activeDirectoryAuth: 'Enabled'
-      passwordAuth: 'Enabled'
+      passwordAuth: 'Disabled'
       tenantId: subscription().tenantId
     }
     backup: {
