@@ -2,6 +2,7 @@
 -- It creates a table to store the cases data and loads the data from the cases.csv file into the table.
 
 DROP TABLE IF EXISTS cases;
+DROP TABLE IF EXISTS temp_cases;
 
 -- Create a table to store the cases data
 CREATE TABLE cases(
