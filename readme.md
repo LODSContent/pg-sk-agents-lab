@@ -4,7 +4,7 @@ This lab guides you through developing an agent-driven, Retrieval-Augmented Gene
 
 ## Architecture
 
-![Architecture](./Docs/image/arch.png "Architecture")
+![Architecture](./Docs/images/arch.png)
 
 ## Overview
 
