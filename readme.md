@@ -74,6 +74,38 @@ This lab guides you through developing an agent-driven, Retrieval-Augmented Gene
    - Adding external data sources (weather API)
    - Testing and improving the agent
 
+## Deploying to Azure
+
+1. Set environment variables for resource group:
+
+   ```bash
+   export AZURE_RESOURCE_GROUP=<your-resource-group>
+   export AZURE_LOCATION=<your-location>
+   ```
+
+2. Create a resource group:
+
+   ```bash
+   az group create --name $AZURE_RESOURCE_GROUP --location $AZURE_LOCATION
+   ```
+
+3. Deploy the infrastructure using Bicep:
+
+   ```bash
+   az deployment group create --resource-group $AZURE_RESOURCE_GROUP --template-file Setup/Infra/deploy.bicep --parameters restore=false --only-show-errors
+   ```
+
+4. Set up the PostgreSQL database and extensions:
+
+   ```bash
+   $aadUserPrincipalName = "@lab.CloudPortalCredential(User1).Username"
+   $objectId = az ad user show --id $aadUserPrincipalName --query id --output tsv
+   $resourceGroupName = "@lab.CloudResourceGroup(ResourceGroup1).Name"
+   $server = az postgres flexible-server list --resource-group $resourceGroupName --query "[0].name" --output tsv
+
+   az postgres flexible-server ad-admin create --resource-group $resourceGroupName --server-name $server --display-name $aadUserPrincipalName --object-id $objectId
+   ```
+
 ## Getting Started
 
 1. Follow the instructions in lab_manual.md to setup your environment

@@ -107,12 +107,9 @@ resource azureOpenAIService 'Microsoft.CognitiveServices/accounts@2023-05-01' = 
 resource azureOpenAIEmbeddingDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = {
   name: 'text-embedding-3-small'
   parent: azureOpenAIService
-  dependsOn: [
-    azureOpenAIService    
-  ]
   sku: {
     name: 'Standard'
-    capacity: 350
+    capacity: 30
   }
   properties: {
     model: {
@@ -129,12 +126,11 @@ resource azureOpenAIChatDeployment 'Microsoft.CognitiveServices/accounts/deploym
   name: 'gpt-4o'
   parent: azureOpenAIService
   dependsOn: [
-    azureOpenAIService
     azureOpenAIEmbeddingDeployment
   ]
   sku: {
     name: 'Standard'
-    capacity: 200
+    capacity: 20
   }
   properties: {
     model: {
