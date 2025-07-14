@@ -88,14 +88,21 @@ module azureOpenAIService 'br/public:avm/res/cognitive-services/account:0.7.2' =
       }
     ]
     disableLocalAuth: true
+    roleAssignments: [
+      {
+        principalId: deployer().objectId
+        roleDefinitionIdOrName: 'Cognitive Services OpenAI User'
+        principalType: 'User'
+      }
+    ]
   }
 }
 
-output serverFqdn string = azurePostgreSQLFlexibleServer.outputs.domain
-output serverName string = azurePostgreSQLFlexibleServer.outputs.name
-output databaseName string = azurePostgreSQLFlexibleServer.outputs.databaseName
-
-output azureOpenAIServiceName string = azureOpenAIService.name
-output azureOpenAIEndpoint string = azureOpenAIService.outputs.endpoint
-output azureOpenAIEmbeddingDeploymentName string = embeddingDeploymentName
-output azureOpenAIChatDeploymentName string = chatDeploymentName
+output AZURE_POSTGRES_DOMAIN string = azurePostgreSQLFlexibleServer.outputs.domain
+output AZURE_POSTGRES_SERVICE string = azurePostgreSQLFlexibleServer.outputs.name
+output AZURE_POSTGRES_DBNAME string = azurePostgreSQLFlexibleServer.outputs.databaseName
+output AZURE_POSTGRES_USER string = deployer().userPrincipalName
+output AZURE_OPENAI_SERVICE string = azureOpenAIService.name
+output AZURE_OPENAI_ENDPOINT string = azureOpenAIService.outputs.endpoint
+output AZURE_OPENAI_EMB_DEPLOYMENT string = embeddingDeploymentName
+output AZURE_OPENAI_CHAT_DEPLOYMENT string = chatDeploymentName

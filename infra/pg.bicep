@@ -81,6 +81,24 @@ resource allowlistExtensions 'Microsoft.DBforPostgreSQL/flexibleServers/configur
   }
 }
 
+// This must be created *after* the server is created - it cannot be a nested child resource
+resource addAddUser 'Microsoft.DBforPostgreSQL/flexibleServers/administrators@2023-03-01-preview' = {
+  name: deployer().objectId // Use the deployer's principal ID as the name
+  parent: postgreSQLFlexibleServer
+  properties: {
+    tenantId: subscription().tenantId
+    principalType: 'User'
+    principalName: deployer().userPrincipalName
+  }
+  dependsOn: [
+    allowAllAzureServicesAndResourcesWithinAzureIps
+    allowAll
+    casesDatabase
+    allowlistExtensions
+  ]
+}
+
+
 output name string = postgreSQLFlexibleServer.name
 output domain string = postgreSQLFlexibleServer.properties.fullyQualifiedDomainName
 output databaseName string = casesDatabase.name
