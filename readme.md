@@ -74,37 +74,34 @@ This lab guides you through developing an agent-driven, Retrieval-Augmented Gene
    - Adding external data sources (weather API)
    - Testing and improving the agent
 
+
 ## Deploying to Azure
 
-1. Set environment variables for resource group:
+Follow these steps to deploy a PostgreSQL Flexible Server to Azure with the pgvector extension enabled:
 
-   ```bash
-   export AZURE_RESOURCE_GROUP=<your-resource-group>
-   export AZURE_LOCATION=<your-location>
-   ```
+1. Login to your Azure account:
 
-2. Create a resource group:
+    ```shell
+    azd auth login
+    ```
 
-   ```bash
-   az group create --name $AZURE_RESOURCE_GROUP --location $AZURE_LOCATION
-   ```
+1. Create a new azd environment:
 
-3. Deploy the infrastructure using Bicep:
+    ```shell
+    azd env new
+    ```
 
-   ```bash
-   az deployment group create --resource-group $AZURE_RESOURCE_GROUP --template-file Setup/Infra/deploy.bicep --parameters restore=false --only-show-errors
-   ```
+    Enter a name that will be used for the resource group.
+    This will create a new folder in the `.azure` folder, and set it as the active environment for any calls to `azd` going forward.
 
-4. Set up the PostgreSQL database and extensions:
+1. Run this command to provision all the resources:
 
-   ```bash
-   $aadUserPrincipalName = "@lab.CloudPortalCredential(User1).Username"
-   $objectId = az ad user show --id $aadUserPrincipalName --query id --output tsv
-   $resourceGroupName = "@lab.CloudResourceGroup(ResourceGroup1).Name"
-   $server = az postgres flexible-server list --resource-group $resourceGroupName --query "[0].name" --output tsv
+    ```shell
+    azd provision
+    ```
 
-   az postgres flexible-server ad-admin create --resource-group $resourceGroupName --server-name $server --display-name $aadUserPrincipalName --object-id $objectId
-   ```
+    This will create a new resource group, and create the PostgreSQL Flexible server and Azure OpenAI resources in that resource group.
+    It will also create a `.env` file in the root of the project, which contains the connection information for the PostgreSQL server and Azure OpenAI.
 
 ## Getting Started
 
