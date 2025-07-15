@@ -74,6 +74,35 @@ This lab guides you through developing an agent-driven, Retrieval-Augmented Gene
    - Adding external data sources (weather API)
    - Testing and improving the agent
 
+
+## Deploying to Azure
+
+Follow these steps to deploy a PostgreSQL Flexible Server to Azure with the pgvector extension enabled:
+
+1. Login to your Azure account:
+
+    ```shell
+    azd auth login
+    ```
+
+1. Create a new azd environment:
+
+    ```shell
+    azd env new
+    ```
+
+    Enter a name that will be used for the resource group.
+    This will create a new folder in the `.azure` folder, and set it as the active environment for any calls to `azd` going forward.
+
+1. Run this command to provision all the resources:
+
+    ```shell
+    azd provision
+    ```
+
+    This will create a new resource group, and create the PostgreSQL Flexible server and Azure OpenAI resources in that resource group.
+    It will also create a `.env` file in the root of the project, which contains the connection information for the PostgreSQL server and Azure OpenAI.
+
 ## Getting Started
 
 1. Follow the instructions in lab_manual.md to setup your environment
