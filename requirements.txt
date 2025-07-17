@@ -3,7 +3,7 @@ psycopg-binary
 psycopg-pool
 pydantic
 openai
-semantic-kernel>=1.34.0
+semantic-kernel==1.31.0
 nest_asyncio
 ipykernel
 python-dotenv
